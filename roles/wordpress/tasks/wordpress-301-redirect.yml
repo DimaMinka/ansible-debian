@@ -1,0 +1,15 @@
+---
+
+- name: add config to nginx
+  template:
+    src=wordpress-301-redirect.j2
+    dest=/etc/nginx/sites-available/{{ wordpress_domain }}.conf
+    backup=yes
+
+- name: create symlink for nginx config
+  file:
+    src: /etc/nginx/sites-available/{{ wordpress_domain }}.conf
+    dest: /etc/nginx/sites-enabled/{{ wordpress_domain }}.conf
+    state: link
+  notify:
+    - restart nginx

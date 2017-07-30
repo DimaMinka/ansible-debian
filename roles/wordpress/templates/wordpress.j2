@@ -1,5 +1,10 @@
 server {
-	server_name www.{{ wordpress_domain }} {{ wordpress_domain }};
+	server_name www.{{ wordpress_domain }};
+	return 301 http://{{ wordpress_domain }}$request_uri;
+}
+
+server {
+	server_name {{ wordpress_domain }};
 	listen 80;
 	charset utf-8;
 	port_in_redirect off;

@@ -1,0 +1,24 @@
+#!/bin/sh
+cd {{ www_directory }}
+
+DATE="`date '+%Y-%m-%d'`"
+DATABASE_FILENAME="database-$DATE.sql.gz"
+FILES_FILENAME="{{ wordpress_domain }}-$DATE.tar.gz"
+
+BACKUP="{{ store_backups_to }}/{{ wordpress_domain }}/$DATE"
+BACKUP_ARCHIVE="$BACKUP/$FILES_FILENAME"
+BACKUP_MESSAGE="{{ wordpress_domain }} successfully backed up"
+
+mkdir -p $BACKUP
+
+echo -n "Creating and compressing database dump... "
+/usr/bin/mysqldump --user={{ mysql_user }} --password="{{ mysql_password }}" {{ mysql_database }} | gzip > $BACKUP/$DATABASE_FILENAME
+echo "OK!"
+
+echo -n "Archiving files... "
+tar -czf $BACKUP_ARCHIVE .
+echo "OK!"
+
+chown -R {{ wordpress_username }}:{{ wordpress_username }} "{{ store_backups_to }}/{{ wordpress_domain }}/$DATE"
+
+echo "$BACKUP_MESSAGE to: $BACKUP\n\nFiles:\n- $FILES_FILENAME\n- $DATABASE_FILENAME\n" | mail -s "[$DATE] $BACKUP_MESSAGE" {{ send_backup_status_to }}

@@ -1,0 +1,4 @@
+server {
+	server_name www.{{ wordpress_domain }} {{ wordpress_domain }};
+	rewrite ^ http://{{ new_domain }}$request_uri? permanent;
+}
