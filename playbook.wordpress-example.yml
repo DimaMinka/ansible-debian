@@ -22,12 +22,18 @@
     - role: php
       tags: php
 
+    - role: exim
+      tags: exim
+      yandex_login: "{{ lookup('env', 'YANDEX_LOGIN') }}"
+      yandex_password: "{{ lookup('env', 'YANDEX_PASSWORD') }}"
+
     - role: wordpress
       vars:
         wordpress_domain: 'example.app.dev'
         mysql_database:   "{{ mysql_credentials[0].database }}"
         mysql_user:       "{{ mysql_credentials[0].username }}"
         mysql_password:   "{{ mysql_credentials[0].password }}"
+        create_backups:   true
       tags: wordpress
       when: mysql_credentials is defined
 
@@ -37,6 +43,7 @@
         mysql_database:   "{{ mysql_credentials[1].database }}"
         mysql_user:       "{{ mysql_credentials[1].username }}"
         mysql_password:   "{{ mysql_credentials[1].password }}"
+        create_backups:   true
       tags: wordpress
       when: mysql_credentials is defined
 
@@ -46,5 +53,12 @@
         mysql_database:   "{{ mysql_credentials[2].database }}"
         mysql_user:       "{{ mysql_credentials[2].username }}"
         mysql_password:   "{{ mysql_credentials[2].password }}"
+        create_backups:   false
       tags: wordpress
       when: mysql_credentials is defined
+
+    - role: website
+      vars:
+        website_domain: 'website1.app.dev'
+        website_engine: "dle"
+      tags: website
