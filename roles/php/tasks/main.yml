@@ -8,13 +8,13 @@
 # If this repository is not available you must choose another one from https://www.dotdeb.org/mirrors/
 - name: add dotdeb.org's mirror repository
   apt_repository:
-    repo: "deb http://dotdeb.netmirror.org jessie all"
+    repo: "deb http://dotdeb.thefox.com.fr jessie all"
     state: present
     update_cache: yes
 
 - name: add dotdeb.org's mirror sources repository
   apt_repository:
-    repo: "deb-src http://dotdeb.netmirror.org jessie all"
+    repo: "deb-src http://dotdeb.thefox.com.fr jessie all"
     state: present
     update_cache: yes
 
@@ -25,6 +25,7 @@
    - php7.0-curl
    - php7.0-dev
    - php7.0-zip
+   - php7.0-bz2
    - php7.0-fpm
    - php7.0-gd
    - php7.0-xml
@@ -56,6 +57,7 @@
     - { key: 'upload_max_filesize', value: '8M' }
     - { key: 'max_execution_time', value: 60 }
     - { key: 'max_input_vars', value: 5000 }
+    - { key: 'cgi.fix_pathinfo', value: 0 }
   notify:
     - restart php-fpm
 
