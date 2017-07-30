@@ -1,7 +1,7 @@
 ---
 
 - name: iptables rules are installed
-  copy: src=rules dest=/etc/iptables backup=yes
+  copy: src=rules dest=/etc/iptables backup=yes force=no
   notify:
     - reload iptables
 
